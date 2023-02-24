@@ -9,12 +9,9 @@ package:
   individually: true
   exclude:
     - node_modules/**
-    - slash-commands/**
-    - layers/**
     - README.md
     - package-lock.json
     - package.json
-    - tokens.yml
 
 functions:
   bot:
