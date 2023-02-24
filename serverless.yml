@@ -1,0 +1,41 @@
+service: serverless-formulas
+
+provider:
+  name: aws
+  runtime: python3.9
+  region: eu-west-2
+
+package:
+  individually: true
+  exclude:
+    - node_modules/**
+    - slash-commands/**
+    - layers/**
+    - README.md
+    - package-lock.json
+    - package.json
+    - tokens.yml
+
+functions:
+  bot:
+    handler: src/handler.main
+    timeout: 15
+    memorySize: 512
+    url: true
+    layers:
+      - arn:aws:lambda:${aws:region}:${aws:accountId}:layer:pandas:1
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - dynamodb:DescribeTable
+          - dynamodb:Query
+          - dynamodb:Scan
+          - dynamodb:GetItem
+          - dynamodb:PutItem
+          - dynamodb:UpdateItem
+          - dynamodb:DeleteItem
+        Resource:
+          - arn:aws:dynamodb:*:${aws:accountId}:table/*
+
+plugins:
+  - serverless-iam-roles-per-function
