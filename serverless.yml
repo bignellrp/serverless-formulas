@@ -21,6 +21,14 @@ functions:
     url: false
     layers:
       - arn:aws:lambda:${aws:region}:${aws:accountId}:layer:pandas:1
+    # events:
+    #   - stream:
+    #       type: dynamodb
+    #       batchSize: 1
+    #       startingPosition: LATEST
+    #       arn:
+    #         Ref: arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/results_table/stream/2023-02-24T18:53:24.159
+    ## Need to work out how to add the stream to an existing table and grab the arn
     iamRoleStatements:
       - Effect: "Allow"
         Action:
@@ -31,6 +39,10 @@ functions:
           - dynamodb:PutItem
           - dynamodb:UpdateItem
           - dynamodb:DeleteItem
+          - dynamodb:DescribeStream
+          - dynamodb:GetRecords
+          - dynamodb:GetShardIterator
+          - dynamodb:ListStreams
         Resource:
           - arn:aws:dynamodb:*:${aws:accountId}:table/*
 

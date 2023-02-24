@@ -31,12 +31,15 @@ def get_teams(date):
         teamb.append(response['Item']['Team B Player 5']['S'])
         
         print("Can give error N or S if total field type is wrong")
-        scorea = response['Item']['Team A Total']['N']
-        scoreb = response['Item']['Team B Total']['N']
+        totala = response['Item']['Team A Total']['N']
+        totalb = response['Item']['Team B Total']['N']
 
         coloura = response['Item']['Team A Colour']['S']
         colourb = response['Item']['Team B Colour']['S']
 
-        return teama,teamb,scorea,scoreb,coloura,colourb
+        scorea = response['Item']['Team A Colour']['S']
+        scoreb = response['Item']['Team B Colour']['S']
+
+        return teama,teamb,scorea,scoreb,coloura,colourb,totala,totalb
     except ClientError as e:
         raise Exception(f'Error getting values: {e}')
