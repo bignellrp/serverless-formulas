@@ -9,31 +9,39 @@ results_table = boto3.resource('dynamodb').Table('results_table')
 player_table = boto3.resource('dynamodb').Table('player_table')
 
 def get_results():
-    results_df = get_df(table="results_table")
-    results_df = results_df.filter(['Date',
-                            'Team A Result?',
-                            'Team B Result?',
-                            'Team A Total',
-                            'Team B Total',
-                            'Team A Player 1',
-                            'Team A Player 2',
-                            'Team A Player 3',
-                            'Team A Player 4',
-                            'Team A Player 5',
-                            'Team B Player 1',
-                            'Team B Player 2',
-                            'Team B Player 3',
-                            'Team B Player 4',
-                            'Team B Player 5',
-                            'Team A Colour',
-                            'Team B Colour'])
-    results_df['Date'] = pd.to_datetime(results_df.Date, 
-                                    format='%Y%m%d', errors='ignore')
-    results_df['Team A Result?'] = pd.to_numeric(
-                                    results_df['Team A Result?'])
-    results_df['Team B Result?'] = pd.to_numeric(
-                                    results_df['Team B Result?'])
-    return results_df
+    date = str(get_date.closest_wednesday)
+    teama,teamb,scorea,scoreb,coloura,colourb,totala,totalb = dynamo_bot_funcs.get_teams(date)
+    #Check if scorea is a dash
+    print(f"ScoreA is a {scorea}")
+    if scorea != "-":
+        results_df = get_df(table="results_table")
+        results_df = results_df.filter(['Date',
+                                'Team A Result?',
+                                'Team B Result?',
+                                'Team A Total',
+                                'Team B Total',
+                                'Team A Player 1',
+                                'Team A Player 2',
+                                'Team A Player 3',
+                                'Team A Player 4',
+                                'Team A Player 5',
+                                'Team B Player 1',
+                                'Team B Player 2',
+                                'Team B Player 3',
+                                'Team B Player 4',
+                                'Team B Player 5',
+                                'Team A Colour',
+                                'Team B Colour'])
+        results_df['Date'] = pd.to_datetime(results_df.Date, 
+                                        format='%Y%m%d', errors='ignore')
+        results_df['Team A Result?'] = pd.to_numeric(
+                                        results_df['Team A Result?'])
+        results_df['Team B Result?'] = pd.to_numeric(
+                                        results_df['Team B Result?'])
+        return results_df
+    else:
+        print("Cannot run formulas due to dash!")
+        return
 
 def calc_wdl(player, df):
     '''Calculate wins,draws,losses for each player
@@ -61,6 +69,8 @@ def update_formulas():
     '''Updates formulas'''
     date = str(get_date.closest_wednesday)
     teama,teamb,scorea,scoreb,coloura,colourb,totala,totalb = dynamo_bot_funcs.get_teams(date)
+    #Check if scorea is a dash
+    print(f"ScoreA is a {scorea}")
     if scorea != "-":
         played_thisweek = teama + teamb
         df = get_results()
