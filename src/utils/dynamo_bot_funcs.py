@@ -36,7 +36,7 @@ def get_teams(date):
 
         coloura = response['Item']['Team A Colour']['S']
         colourb = response['Item']['Team B Colour']['S']
-
+        #Need to check if response can be Item plus Value without Type
         scorea = response['Item']['Team A Result?']['S']
         scoreb = response['Item']['Team B Result?']['S']
 
