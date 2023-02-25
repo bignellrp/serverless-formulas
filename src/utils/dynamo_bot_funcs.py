@@ -37,8 +37,8 @@ def get_teams(date):
         coloura = response['Item']['Team A Colour']['S']
         colourb = response['Item']['Team B Colour']['S']
 
-        scorea = response['Item']['Team A Colour']['S']
-        scoreb = response['Item']['Team B Colour']['S']
+        scorea = response['Item']['Team A Result?']['S']
+        scoreb = response['Item']['Team B Result?']['S']
 
         return teama,teamb,scorea,scoreb,coloura,colourb,totala,totalb
     except ClientError as e:
