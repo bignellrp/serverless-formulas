@@ -1,8 +1,10 @@
-from src.utils import get_date, dynamo_bot_funcs
+from src.utils import get_date
 import boto3
 from botocore.exceptions import ClientError
 from dynamo_pandas import get_df
 import pandas as pd
+
+from utils import get_teams
 
 dynamodb = boto3.client('dynamodb')
 results_table = boto3.resource('dynamodb').Table('results_table')
@@ -10,7 +12,7 @@ player_table = boto3.resource('dynamodb').Table('player_table')
 
 def get_results():
     date = str(get_date.closest_wednesday)
-    teama,teamb,scorea,scoreb,coloura,colourb,totala,totalb = dynamo_bot_funcs.get_teams(date)
+    teama,teamb,scorea,scoreb,coloura,colourb,totala,totalb = get_teams.get_teams(date)
     #Check if scorea is a dash
     print(f"ScoreA is a {scorea}")
     if scorea != "-":
@@ -68,7 +70,7 @@ def calc_wdl(player, df):
 def update_formulas():
     '''Updates formulas'''
     date = str(get_date.closest_wednesday)
-    teama,teamb,scorea,scoreb,coloura,colourb,totala,totalb = dynamo_bot_funcs.get_teams(date)
+    teama,teamb,scorea,scoreb,coloura,colourb,totala,totalb = get_teams.get_teams(date)
     #Check if scorea is a dash
     print(f"ScoreA is a {scorea}")
     if scorea != "-":
