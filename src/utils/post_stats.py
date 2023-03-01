@@ -1,10 +1,8 @@
-from src.utils import get_date
+from src.utils import get_date, get_teams
 import boto3
 from botocore.exceptions import ClientError
 from dynamo_pandas import get_df
 import pandas as pd
-
-from utils import get_teams
 
 dynamodb = boto3.client('dynamodb')
 results_table = boto3.resource('dynamodb').Table('results_table')
